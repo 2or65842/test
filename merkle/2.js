@@ -1,6 +1,8 @@
 (function() {
     'use strict';
 
+    console.log('2.js script is running');
+
     // Mapping of full names to their co-owner designations
     const coOwnerMapping = {
         'EMEA Sprint Tickets - Merkle Team': 'EMEA Sprint Tickets - Merkle Team',
@@ -21,7 +23,12 @@
 
     // Function to copy text to clipboard
     function copyToClipboard(text) {
-        GM_setClipboard(text);
+        if (typeof GM_setClipboard === 'function') {
+            GM_setClipboard(text);
+            console.log('Copied to clipboard:', text);
+        } else {
+            console.error('GM_setClipboard is not available');
+        }
     }
 
     // Function to get table content as text with custom formatting
@@ -70,6 +77,7 @@
     // Function to add copy buttons to each table header
     function addCopyButtons() {
         const tables = document.querySelectorAll('.issue-table');
+        console.log(`Found ${tables.length} tables`);
         tables.forEach(table => {
             const header = table.querySelector('th');
             if (header) {
@@ -81,6 +89,9 @@
                     copyToClipboard(tableText);
                 };
                 header.appendChild(copyButton);
+                console.log('Copy button added to table header');
+            } else {
+                console.log('No header found for table');
             }
         });
     }
@@ -102,6 +113,9 @@
                 copyToClipboard(allTablesText);
             };
             header.parentNode.insertBefore(copyAllButton, header.nextSibling);
+            console.log('Global copy button added');
+        } else {
+            console.log('No header found for global copy button');
         }
     }
 
