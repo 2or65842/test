@@ -28,17 +28,21 @@
         document.body.appendChild(textArea);
         textArea.select();
         try {
-            document.execCommand('copy');
-            console.log('Fallback: Copied to clipboard:', text);
+            const successful = document.execCommand('copy');
+            if (successful) {
+                console.log('Fallback: Text copied to clipboard');
+            } else {
+                console.error('Fallback: Unable to copy text to clipboard');
+            }
         } catch (err) {
-            console.error('Fallback: Unable to copy to clipboard', err);
+            console.error('Fallback: Unable to copy text to clipboard', err);
         }
         document.body.removeChild(textArea);
     }
 
     // Function to copy text to clipboard
     function copyToClipboard(text) {
-        console.log('Copying text to clipboard...');
+        console.log('Attempting to copy text to clipboard...');
         copyToClipboardFallback(text);
     }
 
