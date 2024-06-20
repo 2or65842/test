@@ -21,14 +21,25 @@
         'Natasha Alonso': 'TR,CA'
     };
 
+    // Fallback function to copy text to clipboard
+    function copyToClipboardFallback(text) {
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+        try {
+            document.execCommand('copy');
+            console.log('Fallback: Copied to clipboard:', text);
+        } catch (err) {
+            console.error('Fallback: Unable to copy to clipboard', err);
+        }
+        document.body.removeChild(textArea);
+    }
+
     // Function to copy text to clipboard
     function copyToClipboard(text) {
-        if (typeof GM_setClipboard === 'function') {
-            GM_setClipboard(text);
-            console.log('Copied to clipboard:', text);
-        } else {
-            console.error('GM_setClipboard is not available');
-        }
+        console.log('Copying text to clipboard...');
+        copyToClipboardFallback(text);
     }
 
     // Function to get table content as text with custom formatting
