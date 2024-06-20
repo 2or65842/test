@@ -33,10 +33,12 @@
 
     // Function to get table content as text with custom formatting
     function getTableText(table) {
+        console.log('Getting table text');
         let tableText = '';
         const dashboardTitleElement = table.closest('.gadget').querySelector('.dashboard-item-title');
         if (dashboardTitleElement) {
             const dashboardTitle = dashboardTitleElement.innerText;
+            console.log('Dashboard title:', dashboardTitle);
             let match = dashboardTitle.match(/Filter Results: ([\w\s]+).* Status Report/);
             let name = match ? match[1].trim() : "";
 
@@ -71,6 +73,7 @@
                 tableText += rowText + '\n';
             });
         }
+        console.log('Table text:', tableText);
         return tableText;
     }
 
@@ -110,6 +113,7 @@
                 tables.forEach(table => {
                     allTablesText += getTableText(table) + '\n\n';
                 });
+                console.log('All tables text:', allTablesText);
                 copyToClipboard(allTablesText);
             };
             header.parentNode.insertBefore(copyAllButton, header.nextSibling);
