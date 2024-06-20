@@ -2,12 +2,15 @@
     'use strict';
 
     // Check if the current URL matches the specified JIRA dashboard page
-    const expectedURL = "https://jira.corp.adobe.com/secure/Dashboard.jspa?selectPageId=138528";
-    if (window.location.href !== expectedURL) {
+    const expectedURL = new URL("https://jira.corp.adobe.com/secure/Dashboard.jspa?selectPageId=138528");
+    const currentURL = new URL(window.location.href);
+
+    // Ensure the script only runs on the exact expected URL
+    if (currentURL.origin !== expectedURL.origin || currentURL.pathname !== expectedURL.pathname || currentURL.search !== expectedURL.search) {
         console.log('2.js script not running: URL does not match');
         return;
     }
-    
+
     console.log('2.js script is running');
 
     // Mapping of full names to their co-owner designations
