@@ -3,14 +3,17 @@ var corsProxyUrl = 'https://api.allorigins.win/get?url=';
 (async function() {
     'use strict';
 
-    // Check if the current URL matches the specified patterns
+    // Check if the current URL matches the specified domain and patterns
     var currentUrl = window.location.href;
+    var currentDomain = window.location.hostname;
     console.log("Current URL: " + currentUrl);
+    console.log("Current Domain: " + currentDomain);
     
-    var dashboardPattern = /:\/\/.*\.jira\.corp\.adobe\.com\/secure\/Dashboard\.jspa/;
-    var browsePattern = /:\/\/.*\.jira\.corp\.adobe\.com\/browse\/.+/;
+    var correctDomain = 'jira.corp.adobe.com';
+    var dashboardPattern = /secure\/Dashboard\.jspa/;
+    var browsePattern = /browse\/.+/;
 
-    if (dashboardPattern.test(currentUrl) || browsePattern.test(currentUrl)) {
+    if (currentDomain === correctDomain && (dashboardPattern.test(currentUrl) || browsePattern.test(currentUrl))) {
         console.log("URL matches pattern.");
 
         // URL of the text file containing your custom message
@@ -85,6 +88,6 @@ var corsProxyUrl = 'https://api.allorigins.win/get?url=';
             console.error('Error fetching text file:', error);
         }
     } else {
-        console.log("URL does not match any pattern.");
+        console.log("URL does not match any pattern or domain.");
     }
 })();
