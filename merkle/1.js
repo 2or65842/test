@@ -3,26 +3,29 @@ var corsProxyUrl = 'https://api.allorigins.win/get?url=';
 (async function() {
     'use strict';
 
-    // URL of the text file containing your custom message
-    var textFileUrl = 'https://main--test--2or65842.hlx.live/message';
+    // Check if the current URL matches the specified patterns
+    var currentUrl = window.location.href;
+    var dashboardPattern = /:\/\/.*\.jira\.corp\.adobe\.com\/secure\/Dashboard\.jspa/;
+    var browsePattern = /:\/\/.*\.jira\.corp\.adobe\.com\/browse\//;
 
-    // Append a cache-busting parameter (current timestamp) to the URL
-    textFileUrl += '?_=' + new Date().getTime();
+    if (dashboardPattern.test(currentUrl) || browsePattern.test(currentUrl)) {
+        // URL of the text file containing your custom message
+        var textFileUrl = 'https://main--test--2or65842.hlx.live/message';
 
-    try {
-        const response = await fetch(corsProxyUrl + encodeURIComponent(textFileUrl));
+        // Append a cache-busting parameter (current timestamp) to the URL
+        textFileUrl += '?_=' + new Date().getTime();
 
-        if (!response.ok) {
-            throw new Error('Network response was not ok ' + response.statusText);
-        }
+        try {
+            const response = await fetch(corsProxyUrl + encodeURIComponent(textFileUrl));
 
-        const data = await response.json();
-        const customText = (data.contents || '').trim();
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
 
-        if (customText) {
-            var pageHeaderMain = document.querySelector('.aui-page-header-main');
+            const data = await response.json();
+            const customText = (data.contents || '').trim();
 
-            if (pageHeaderMain) {
+            if (customText) {
                 var textContainer = document.createElement('div');
                 textContainer.classList.add('custom-text-container');
                 textContainer.style.marginTop = '5px';
@@ -55,10 +58,20 @@ var corsProxyUrl = 'https://api.allorigins.win/get?url=';
                 });
                 textContainer.appendChild(toggleButton);
 
-                pageHeaderMain.appendChild(textContainer);
+                if (dashboardPattern.test(currentUrl)) {
+                    var pageHeaderMain = document.querySelector('.aui-page-header-main');
+                    if (pageHeaderMain) {
+                        pageHeaderMain.appendChild(textContainer);
+                    }
+                } else if (browsePattern.test(currentUrl)) {
+                    var issueSidebar = document.querySelector('#viewissuesidebar.aui-item.issue-side-column');
+                    if (issueSidebar) {
+                        issueSidebar.appendChild(textContainer);
+                    }
+                }
             }
+        } catch (error) {
+            console.error('Error fetching text file:', error);
         }
-    } catch (error) {
-        console.error('Error fetching text file:', error);
     }
 })();
