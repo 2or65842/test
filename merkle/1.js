@@ -6,7 +6,7 @@ var corsProxyUrl = 'https://api.allorigins.win/get?url=';
     // Check if the current URL matches the specified patterns
     var currentUrl = window.location.href;
     var dashboardPattern = /:\/\/.*\.jira\.corp\.adobe\.com\/secure\/Dashboard\.jspa/;
-    var browsePattern = /:\/\/.*\.jira\.corp\.adobe\.com\/browse\//;
+    var browsePattern = /:\/\/.*\.jira\.corp\.adobe\.com\/browse\/.*/;
 
     if (dashboardPattern.test(currentUrl) || browsePattern.test(currentUrl)) {
         // URL of the text file containing your custom message
