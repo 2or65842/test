@@ -72,12 +72,12 @@ var corsProxyUrl = 'https://api.allorigins.win/get?url=';
                         console.error("Element .aui-page-header-main not found.");
                     }
                 } else if (browsePattern.test(currentUrl)) {
-                    console.log("Inserting message into #viewissuesidebar.aui-item.issue-side-column");
-                    var issueSidebar = document.querySelector('#viewissuesidebar.aui-item.issue-side-column');
+                    console.log("Inserting message into #viewissuesidebar");
+                    var issueSidebar = document.querySelector('#viewissuesidebar');
                     if (issueSidebar) {
                         issueSidebar.appendChild(textContainer);
                     } else {
-                        console.error("Element #viewissuesidebar.aui-item.issue-side-column not found.");
+                        console.error("Element #viewissuesidebar not found.");
                     }
                 }
             }
